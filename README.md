@@ -1,6 +1,6 @@
 # lopam 🔐
 
-A local password manager for Linux that encrypts your credentials with XChaCha20-Poly1305 — the same cipher family used by WireGuard and Signal.
+A command-line password manager for Linux that stores encrypted vaults locally, using Argon2id for key derivation and XChaCha20-Poly1305 through established cryptographic libraries.
 
 ---
 
@@ -97,7 +97,7 @@ Each vault is a JSON file with this structure:
 
 **Encryption** — XChaCha20-Poly1305 encrypts the vault contents and authenticates the header metadata as additional data (AD). This means if anyone tampers with the salt, nonce, or KDF parameters on disk, decryption fails immediately.
 
-**Atomic writes** — Vault files are written via a temp file + `os.replace()` + `fsync`. A crash mid-save never leaves a half-written or corrupted vault.
+**Atomic writes** — Vault updates are written to a temporary file in the same directory, flushed to disk, and moved into place with os.replace().
 
 **File permissions** — Vault files are created with mode `0o600` (owner read/write only).
 
